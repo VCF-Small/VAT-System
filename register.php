@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Register - VAT</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=a0979a25f35731ac26dac1c170def768">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="card shadow-lg o-hidden border-0 my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-flex">
+                        <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;assets/img/dogs/image3.png&quot;);"></div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="text-dark mb-4">Create an Account!</h4>
+                            </div>
+                            <form class="user" method="post">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input required class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Enter A Name" name="name"></div>
+                                    <div class="col-sm-6"><input required class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Enter Username" name="username"></div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input required class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
+                                    <div class="col-sm-6"><input required class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
+                                </div><input class="btn btn-primary btn-block text-white btn-user" type="submit" value="Register" name="submit">
+                                <hr>
+                            </form>
+
+                            <?php
+                            session_start();
+                            require_once("conn.php");
+                            if (isset($_SESSION['username'])) {
+                                header("location:index.php");
+                            }
+                            if (isset($_POST['submit'])) {
+                                $username = $_POST['username'];
+                                $password = $_POST['password'];
+                                $password2 = $_POST['password_repeat'];
+                                $name = $_POST['name'];
+                                if ($username != "" && $password != "") {
+                                    if ($password == $password2) {
+                                        $q = "INSERT INTO users(name, username, password) VALUES('" . $name . "','" . $username . "', '" . $password . "')";
+                                        $q2  = "SELECT id FROM users WHERE username = '" . $username . "'";
+                                        $result = mysqli_query($conn, $q2);
+                                        if (mysqli_num_rows($result) == 0) {
+                                            if (mysqli_query($conn, $q)) {
+                                                $dl = $username . "_departments";
+                                                $fq = "CREATE TABLE IF NOT EXISTS " . $dl . "( `id` INT NOT NULL AUTO_INCREMENT , `codename` VARCHAR(10) NOT NULL, `name` VARCHAR(40) NOT NULL , `hodname` VARCHAR(50) NOT NULL, PRIMARY KEY (`id`)) ENGINE = InnoDB;";
+                                                mysqli_query($conn, $fq);
+                                                echo "<p style='color:green;'>Successfully Registered Go To Login Page</p>";
+                                                echo "<script>
+                                                    setTimeout();
+                                                </script>";
+                                            } else {
+                                                echo "Some Error Occured" . mysqli_error($conn);
+                                            }
+                                        } else {
+                                            echo "<p style='color:red;'>username already exists</p>";
+                                        }
+                                    } else {
+                                        echo "<p style='color:red;'>password must be same</p>";
+                                    }
+                                } else {
+                                    echo "<p style='color:red;'>Fill Them</p>";
+                                }
+                            }
+                            ?>
+                            <div class="text-center"><a class="small" href="login.php">Already have an account? Login!</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="assets/js/script.min.js?h=b86d882c5039df370319ea6ca19e5689"></script>
+</body>
+
+</html>
