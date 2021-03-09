@@ -153,9 +153,9 @@
                                 $p = mysqli_num_rows(mysqli_query($conn, $q2));
                                 $total = mysqli_num_rows(mysqli_query($conn, $q3));
                                 if($p != 0 && $total != 0){
-                                    echo '<h4 class="small font-weight-bold">'.$row['codename'].'<span class="float-right">'.($p/$total * 100).'%</span></h4>';
+                                    echo '<h4 class="small font-weight-bold">'.$row['codename'].'<span class="float-right">'.(int)($p/$total * 100).'%</span></h4>';
                                     echo '<div class="progress progress-sm mb-3">
-                                <div class="progress-bar bg-info" aria-valuenow="'.($p/$total * 100).'" aria-valuemin="0" aria-valuemax="100" style="width: '.($p/$total * 100).'%;"><span class="sr-only">'.($p/$total * 100).'%</span></div>
+                                <div class="progress-bar bg-info" aria-valuenow="'.(int)($p/$total * 100).'" aria-valuemin="0" aria-valuemax="100" style="width: '.(int)($p/$total * 100).'%;"><span class="sr-only">'.(int)($p/$total * 100).'%</span></div>
                             </div>';
                                 }
                                 else{
@@ -177,11 +177,7 @@
 
         </div>
     </div>
-    <footer class="bg-white sticky-footer">
-        <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
-        </div>
-    </footer>
+    
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -22,7 +22,7 @@
 
 <body>
     <?php
-    session_start();
+
     include("conn.php");
     ?>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
@@ -31,35 +31,20 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="getmydata.php">Get My Data <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
         </div>
     </nav>
     <div class="container">
         <div class="row" style="margin: 20px;">
-            <script>
-                window.onload = () => {
-                    var deparment = document.getElementById("department").value;
-                    $("#class_select").load("./loadclass.php?department=" + deparment);
-                }
-                $(document).ready(function() {
-                    $('#department').change(function() {
-                        var deparment = document.getElementById("department").value;
-                        $("#class_select").load("./loadclass.php?department=" + deparment);
-                    });
-                    $("#start").click(function(e) {
-                        e.preventDefault();
-                        var deparment = document.getElementById("department").value;
-                        $('#studentlist').load("./loadstudents.php?department=" + deparment);
-                        $('#donenot').text(" ");
-                        $('#submitbuttondiv').html('<input type="submit" class="btn btn-md btn-success" value="Submit Attendance" id="submit" name="submit">');
-                        $('#camerasection').load("loadcamera.php");
-                    });
-                });
-            </script>
             <div class="col text-center">
                 <form method="post">
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-5 col-lg-3">
-                            <label for="department">Department</label>
+                            <label for="department">Department:</label>
                             <select name="department" class="form-control form-control-sm custom-select custom-select-sm" required id="department">
                                 <?php
                                 $dl = $_SESSION['username'] . "_departments";
@@ -75,10 +60,8 @@
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-3">
-                            <label for="department">Class</label>
-                            <select id="class_select" name="class" class="form-control form-control-sm custom-select custom-select-sm" required>
-
-                            </select>
+                            <label for="id">ID</label>
+                            
                         </div>
                         <div class=" justify-content-center col-sm-2 col-xs-12 col-md-2 col-lg-2">
                             <input type="submit" class="btn btn-sm btn-primary" style="margin-top: 31px; float:left;" value="Start" id="start" name="start">

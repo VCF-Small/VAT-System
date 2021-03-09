@@ -17,13 +17,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-    <title>Mark Attendance - VAT CLIENT</title>
+    <title>Get Data - VAT CLIENT</title>
 </head>
 
 <body>
     <?php
-    session_start();
-    include("conn.php");
+    include("../conn.php");
     ?>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
         <a class="navbar-brand" href="../index.php">VAT</a>
@@ -31,19 +30,24 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="getmydata.php">Get My Data <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
         </div>
     </nav>
     <div class="container">
         <div class="row" style="margin: 20px;">
             <script>
                 window.onload = () => {
-                    var deparment = document.getElementById("department").value;
-                    $("#class_select").load("./loadclass.php?department=" + deparment);
+                    var username = document.getElementById("college").value;
+                    $("#departments").load("loaddepartment.php?username=" + username);
                 }
                 $(document).ready(function() {
-                    $('#department').change(function() {
-                        var deparment = document.getElementById("department").value;
-                        $("#class_select").load("./loadclass.php?department=" + deparment);
+                    $('#college').change(function() {
+                        var username = document.getElementById("college").value;
+                        $("#departments").load("loaddepartment.php?username=" + username);
                     });
                     $("#start").click(function(e) {
                         e.preventDefault();
@@ -53,47 +57,57 @@
                         $('#submitbuttondiv').html('<input type="submit" class="btn btn-md btn-success" value="Submit Attendance" id="submit" name="submit">');
                         $('#camerasection').load("loadcamera.php");
                     });
+                    $("#show").click(function(e){
+                        e.preventDefault();
+                        var username = document.getElementById("college").value;
+                        var deparment = document.getElementById("departments").value;
+                    });
                 });
             </script>
-            <div class="col text-center">
+            <div class="col-12 text-center">
                 <form method="post">
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-5 col-lg-3">
-                            <label for="department">Department</label>
-                            <select name="department" class="form-control form-control-sm custom-select custom-select-sm" required id="department">
+                            <label for="department">Department:</label>
+                            <select name="department" class="form-control form-control-sm custom-select custom-select-sm" name="college" required id="college">
                                 <?php
-                                $dl = $_SESSION['username'] . "_departments";
-                                $q = "SELECT codename FROM " . $dl;
+                                $dl = "users";
+                                $q = "SELECT name, username FROM " . $dl;
                                 $qq = mysqli_query($conn, $q);
-
+                                $username = "";
                                 if (mysqli_num_rows($qq) > 0) {
                                     while ($row = mysqli_fetch_assoc($qq)) {
-                                        echo "<option value=" . $row['codename'] . ">" . $row['codename'] . "</option>";
+                                        echo "<option value=" . $row['username'] . " name=" . $row['username'] . ">" . $row['name'] . "</option>";
+                                        $username = $row['username'];
                                     }
                                 }
                                 ?>
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-3">
-                            <label for="department">Class</label>
-                            <select id="class_select" name="class" class="form-control form-control-sm custom-select custom-select-sm" required>
+                            <label for="department">Department:</label>
+                            <select name="department" class="form-control form-control-sm custom-select custom-select-sm" required name="department" id="departments">
+
 
                             </select>
                         </div>
+                        <div class="col-sm-12 col-md-5 col-lg-3">
+                            <label for="department">ID</label>
+                            <input class="form-control form-control-sm" type="text" name="id" id="id">
+                        </div>
                         <div class=" justify-content-center col-sm-2 col-xs-12 col-md-2 col-lg-2">
-                            <input type="submit" class="btn btn-sm btn-primary" style="margin-top: 31px; float:left;" value="Start" id="start" name="start">
+                            <input type="submit" class="btn btn-sm btn-primary" style="margin-top: 31px; float:left;" value="Show" id="show" name="show">
                         </div>
                     </div>
                 </form>
             </div>
-        </div>
-        <div id="camerasection" class="row"></div>
-        <div class="justify-content-center" align="center">
-            <p id="confirm" style="color:white; width:300px;" class="lead form-control bg-info text-center">Select Options And Click Start</p>
+            <div class="col-12" id="data-col">
+
+            </div>
         </div>
         <form method="post">
             <p class="lead text-danger" id="donenot"></p>
-            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+            <!-- <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                 <table class="table my-0 text-center" id="dataTable">
                     <thead>
                         <tr>
@@ -104,11 +118,11 @@
                     </thead>
 
                     <tbody id="studentlist">
-
+                        
                     </tbody>
 
                 </table>
-            </div>
+            </div> -->
             <div class="row justify-content-center" id="submitbuttondiv">
             </div>
         </form>

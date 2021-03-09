@@ -29,7 +29,7 @@
                 $deq = "SELECT name FROM users WHERE username = '".$_SESSION['username']."'";
                 $re = mysqli_query($conn, $deq);
                 while($row = mysqli_fetch_assoc($re)){
-                    echo '<h3 class="lead">'.$row['name'].'</h3>';
+                    echo '<h5 class="text-dark">'.$row['name'].'</h5>';
                 }
             ?>
             </div>
@@ -62,9 +62,44 @@
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="text-primary font-weight-bold m-0">Departments</h6>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <?php
+                        if (isset($_SESSION['username'])) {
+                            $dl = $_SESSION['username'] . "_departments";
+                            $q = "SELECT name,codename, hodname FROM " . $dl;
+                            $qq = mysqli_query($conn, $q);
+                            //         <td>Computer Science</td>
+                            // <td>Dr. Sunil Kumar Jangid</td>
+                            // <td><a href="#" class="btn btn-success btn-sm">Edit</a></td>
+                            if (mysqli_num_rows($qq) > 0) {
+                                while ($row = mysqli_fetch_assoc($qq)) {
+                                    echo '<li class="list-group-item">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col mr-2">
+                                            <h6 class="mb-0"><strong>' . $row['name'] . '</strong></h6><span class="text-xs">' . $row['codename'] . '</span>
+                                        </div>
+                                    </div>
+                                </li>';
+                                }
+                            }
+                        } else {
+                            header("location:login.php");
+                        }
+                        ?>
+
+
+                    </ul>
                 </div>
 
 
+            </div>
 
             </div><!-- Start: Chart -->
             <!-- <div class="row">
@@ -105,11 +140,7 @@
 
         </div>
     </div>
-    <footer class="bg-white sticky-footer">
-        <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
-        </div>
-    </footer>
+    
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

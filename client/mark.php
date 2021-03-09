@@ -23,29 +23,30 @@
         $class_data = $row[$class];
     }
     $q3 = "UPDATE ".$sl." SET ".$class."='".$attend."' WHERE date = '".$date."'";
-    if($class_data != ""){
-        echo '<script>
-        $("#donenot").removeClass("text-success");
-        $("#donenot").addClass("text-danger");
-        </script>';
-        echo "Already Submitted!";
-    }
-    else{
-        if($date != date("d-m-Y")){
-            if(mysqli_query($conn, $q2)){
-                echo "Successfully Submitted The Attendence!";
-            }
-            else{
-                echo mysqli_error($conn);
-            }
+    if($date == date("d-m-Y")){
+        if($class_data != ""){
+            echo '<script>
+            $("#donenot").removeClass("text-success");
+            $("#donenot").addClass("text-danger");
+            </script>';
+            echo "Already Submitted!";
         }
         else{
-            if(mysqli_query($conn, $q3)){
-                echo "Successfully Submitted The Attendence!";
-            }
-            else{
-                echo mysqli_error($conn);
-            }
+                if(mysqli_query($conn, $q3)){
+                    echo "Successfully Submitted The Attendence!";
+                }
+                else{
+                    echo mysqli_error($conn);
+                }
         }
     }
-?>
+    else{
+
+                if(mysqli_query($conn, $q2)){
+                    echo "Successfully Submitted The Attendence!";
+                }
+                else{
+                    echo mysqli_error($conn);
+                }
+
+    }
