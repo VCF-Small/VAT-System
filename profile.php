@@ -20,7 +20,7 @@
         include("conn.php");
         include("navbar.php");
         ?>
-         <?php
+        <?php
         if (!isset($_SESSION['username'])) {
             header("location:login.php");
         }
@@ -139,40 +139,97 @@
                             <?php
                             $sl = $college . "_" . $department . "_" . $id;
                             $cl = $college . "_" . $department;
-                            $q = "SELECT codename FROM ".$cl;
+                            $q = "SELECT codename FROM " . $cl;
                             $result1 = mysqli_query($conn, $q);
-                            while($row = mysqli_fetch_assoc($result1)){
-                                
-                                $q2 = "SELECT ".$row['codename']." FROM ".$sl." WHERE ".$row['codename']."='P'";
-                                $q3 =  "SELECT ".$row['codename']." FROM ".$sl;
+                            while ($row = mysqli_fetch_assoc($result1)) {
+
+                                $q2 = "SELECT " . $row['codename'] . " FROM " . $sl . " WHERE " . $row['codename'] . "='P'";
+                                $q3 =  "SELECT " . $row['codename'] . " FROM " . $sl;
                                 $p = mysqli_num_rows(mysqli_query($conn, $q2));
                                 $total = mysqli_num_rows(mysqli_query($conn, $q3));
-                                if($p != 0 && $total != 0){
-                                    echo '<h4 class="small font-weight-bold">'.$row['codename'].'<span class="float-right">'.(int)($p/$total * 100).'%</span></h4>';
+                                if ($p != 0 && $total != 0) {
+                                    echo '<h4 class="small font-weight-bold">' . $row['codename'] . '<span class="float-right">' . (int)($p / $total * 100) . '%</span></h4>';
                                     echo '<div class="progress progress-sm mb-3">
-                                <div class="progress-bar bg-info" aria-valuenow="'.(int)($p/$total * 100).'" aria-valuemin="0" aria-valuemax="100" style="width: '.(int)($p/$total * 100).'%;"><span class="sr-only">'.(int)($p/$total * 100).'%</span></div>
+                                <div class="progress-bar bg-info" aria-valuenow="' . (int)($p / $total * 100) . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . (int)($p / $total * 100) . '%;"><span class="sr-only">' . (int)($p / $total * 100) . '%</span></div>
                             </div>';
-                                }
-                                else{
-                                    echo '<h4 class="small font-weight-bold">'.$row['codename'].'<span class="float-right">0%</span></h4>';
+                                } else {
+                                    echo '<h4 class="small font-weight-bold">' . $row['codename'] . '<span class="float-right">0%</span></h4>';
                                     echo '<div class="progress progress-sm mb-3">
                                     <div class="progress-bar bg-info" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"><span class="sr-only">0%</span></div>
                                 </div>';
                                 }
                             }
+
                             ?>
-                            
-                            
+
+
 
                         </div>
                     </div>
                 </div>
-
+                <div class="col-lg-8">
+                    <?php
+                           echo ' <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                           <table class="table my-0" id="dataTable">
+                               <thead>
+                                   <tr>';
+                           
+                               $q1 = "SELECT codename FROM " . $cl;
+                               $q2 = "SELECT id, date";
+                               $carr = array();
+                               $result1 = mysqli_query($conn, $q1);
+                               echo '<th>Date</th>';
+                               while ($row = mysqli_fetch_assoc($result1)) {
+                                   echo '<th>' . $row['codename'] . '</th>';
+                                   array_push($carr, $row['codename']);
+                               }
+                               $count = count($carr);
+                               echo '</tr>
+                               </thead>
+                               <tbody>
+                                   ';
+                               $q2 = "SELECT id, date";
+                               $result1 = mysqli_query($conn, $q1);
+                           
+                               foreach ($carr as $i) {
+                                   $q2 .= ", " . $i;
+                               }
+                           
+                           
+                               $q2 .= " FROM " . $sl . " ORDER BY id DESC";
+                           
+                               $qq = mysqli_query($conn, $q2);
+                               //         <td>Computer Science</td>
+                               // <td>Dr. Sunil Kumar Jangid</td>
+                               // <td><a href="#" class="btn btn-success btn-sm">Edit</a></td>
+                               if (mysqli_num_rows($qq) > 0) {
+                                   while ($row = mysqli_fetch_assoc($qq)) {
+                                       echo '<tr><td>'.$row['date'].'</td>';
+                                       for ($i = 0; $i < $count; $i++) {
+                                           if ($row[$carr[$i]] == "P") {
+                                               echo '<td style="width:25px; height=25px; background-color:rgb(113, 222, 115); color:white;">P</td>';
+                                           }
+                                           else {
+                                               echo '<td style="width:25px; height=25px; background-color:rgb(242, 82, 82); color:white;">A</td>';
+                                           }
+                                       }
+                                       echo '</tr>';
+                                   }
+                               }
+                               echo '
+                                   
+                           
+                               </tbody>
+                           
+                           </table>
+                           </div>';
+                    ?>
+                </div>
             </div>
 
         </div>
     </div>
-    
+
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

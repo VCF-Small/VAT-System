@@ -18,15 +18,15 @@ if (isset($_GET['username']) && isset($_GET['department']) && isset($_GET['id'])
     $college = "";
     $department = "";
     $id = "";
-        $username = $_GET['username'];
-        $department = $_GET['department'];
-        $id = $_GET['id'];
-        $d = $college . "_" . $department . "_students";
-        $q = "SELECT id, name, collegeid, age, gender, address FROM " . $sl . " WHERE collegeid=" . $id;
-        $result = mysqli_query($conn, $q);
-        while ($row = mysqli_fetch_assoc($result)) {
-            array_push($data, $row['name'], $row['collegeid'], $row['age'], $row['gender'], $row['address']);
-        }
+    $username = $_GET['username'];
+    $department = $_GET['department'];
+    $id = $_GET['id'];
+    $d = $college . "_" . $department . "_students";
+    $q = "SELECT id, name, collegeid, age, gender, address FROM " . $sl . " WHERE collegeid=" . $id;
+    $result = mysqli_query($conn, $q);
+    while ($row = mysqli_fetch_assoc($result)) {
+        array_push($data, $row['name'], $row['collegeid'], $row['age'], $row['gender'], $row['address']);
+    }
 
     echo '<div id="student_id">
             <div class="form-row">
@@ -72,40 +72,94 @@ if (isset($_GET['username']) && isset($_GET['department']) && isset($_GET['id'])
     </div>
 </div>';
 
-echo '<div class="">
+    echo '<div class="">
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="text-primary font-weight-bold m-0">Attendance Percent</h6>
     </div>
     <div class="card-body">';
-        $sl = $username . "_" . $department . "_" . $id;
-        $cl = $username . "_" . $department;
-        $q = "SELECT codename FROM ".$cl;
-        $result1 = mysqli_query($conn, $q);
-        while($row = mysqli_fetch_assoc($result1)){
-            
-            $q2 = "SELECT ".$row['codename']." FROM ".$sl." WHERE ".$row['codename']."='P'";
-            $q3 =  "SELECT ".$row['codename']." FROM ".$sl;
-            $p = mysqli_num_rows(mysqli_query($conn, $q2));
-            $total = mysqli_num_rows(mysqli_query($conn, $q3));
-            if($p != 0 && $total != 0){
-                echo '<h4 class="small font-weight-bold">'.$row['codename'].'<span class="float-right">'.(int)($p/$total * 100).'%</span></h4>';
-                echo '<div class="progress progress-sm mb-3">
-            <div class="progress-bar bg-info" aria-valuenow="'.(int)($p/$total * 100).'" aria-valuemin="0" aria-valuemax="100" style="width: '.(int)($p/$total * 100).'%;"><span class="sr-only">'.(int)($p/$total * 100).'%</span></div>
+    $sl = $username . "_" . $department . "_" . $id;
+    $cl = $username . "_" . $department;
+    $q = "SELECT codename FROM " . $cl;
+    $result1 = mysqli_query($conn, $q);
+    while ($row = mysqli_fetch_assoc($result1)) {
+
+        $q2 = "SELECT " . $row['codename'] . " FROM " . $sl . " WHERE " . $row['codename'] . "='P'";
+        $q3 =  "SELECT " . $row['codename'] . " FROM " . $sl;
+        $p = mysqli_num_rows(mysqli_query($conn, $q2));
+        $total = mysqli_num_rows(mysqli_query($conn, $q3));
+        if ($p != 0 && $total != 0) {
+            echo '<h4 class="small font-weight-bold">' . $row['codename'] . '<span class="float-right">' . (int)($p / $total * 100) . '%</span></h4>';
+            echo '<div class="progress progress-sm mb-3">
+            <div class="progress-bar bg-info" aria-valuenow="' . (int)($p / $total * 100) . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . (int)($p / $total * 100) . '%;"><span class="sr-only">' . (int)($p / $total * 100) . '%</span></div>
         </div>';
-            }
-            else{
-                echo '<h4 class="small font-weight-bold">'.$row['codename'].'<span class="float-right">0%</span></h4>';
-                echo '<div class="progress progress-sm mb-3">
+        } else {
+            echo '<h4 class="small font-weight-bold">' . $row['codename'] . '<span class="float-right">0%</span></h4>';
+            echo '<div class="progress progress-sm mb-3">
                 <div class="progress-bar bg-info" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"><span class="sr-only">0%</span></div>
             </div>';
-            }
         }
-   echo ' </div>
+    }
+    echo ' </div>
 </div>
+</div>';
+
+    echo ' <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+<table class="table my-0" id="dataTable">
+    <thead>
+        <tr>';
+
+    $cl = $_GET['username'] . "_" . $_GET['department'];
+    $q1 = "SELECT codename FROM " . $cl;
+    $q2 = "SELECT id, date";
+    $carr = array();
+    $result1 = mysqli_query($conn, $q1);
+    echo '<th>Date</th>';
+    while ($row = mysqli_fetch_assoc($result1)) {
+        echo '<th>' . $row['codename'] . '</th>';
+        array_push($carr, $row['codename']);
+    }
+    $count = count($carr);
+    echo '</tr>
+    </thead>
+    <tbody>
+        ';
+    $sl = $_GET['username'] . "_" . $_GET['department'] . "_" . $_GET['id'];
+    $q2 = "SELECT id, date";
+    $result1 = mysqli_query($conn, $q1);
+
+    foreach ($carr as $i) {
+        $q2 .= ", " . $i;
+    }
+
+
+    $q2 .= " FROM " . $sl . " ORDER BY id DESC";
+
+    $qq = mysqli_query($conn, $q2);
+    //         <td>Computer Science</td>
+    // <td>Dr. Sunil Kumar Jangid</td>
+    // <td><a href="#" class="btn btn-success btn-sm">Edit</a></td>
+    if (mysqli_num_rows($qq) > 0) {
+        while ($row = mysqli_fetch_assoc($qq)) {
+            echo '<tr><td>'.$row['date'].'</td>';
+            for ($i = 0; $i < $count; $i++) {
+                if ($row[$carr[$i]] == "P") {
+                    echo '<td style="width:25px; height=25px; background-color:rgb(113, 222, 115); color:white;">P</td>';
+                }
+                else {
+                    echo '<td style="width:25px; height=25px; background-color:rgb(242, 82, 82); color:white;">A</td>';
+                }
+            }
+            echo '</tr>';
+        }
+    }
+    echo '
+        
+
+    </tbody>
+
+</table>
 </div>';
 } else {
     echo "Fill All The Details";
 }
-
-?>
