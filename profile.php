@@ -131,11 +131,6 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <!-- <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="assets/img/dogs/image2.jpeg?h=a0a7d00bcd8e4f84f4d8ce636a8f94d4" width="160" height="160">
-                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button></div>
-                                </div>
-                            </div> -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="text-primary font-weight-bold m-0">Attendance Percent</h6>
