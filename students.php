@@ -25,6 +25,17 @@
         }
         ?>
         <div class="container-fluid">
+            <?php
+
+            if (!isset($_GET['department'])) {
+                $dl = $_SESSION['username'] . "_departments";
+                $q = "SELECT codename FROM " . $dl . " ORDER BY ID ASC LIMIT 1";
+                $result = mysqli_query($conn, $q);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<script> location.href='students.php?department=" . $row['codename'] . "'</script>";
+                }
+            }
+            ?>
             <h3 class="text-dark mb-4">Students</h3>
             <div class="card shadow">
                 <div class="card-header py-3">
@@ -43,11 +54,12 @@
                             <form method="post">
                                 <select class="form-control form-control-sm custom-select custom-select-sm" name="department" required id="department">
                                     <?php
-                                    
+
                                     $department = "";
                                     if (isset($_GET['department'])) {
                                         $department = $_GET['department'];
                                     }
+
 
                                     $dl = $_SESSION['username'] . "_departments";
                                     $q = "SELECT codename FROM " . $dl;
@@ -62,8 +74,6 @@
                                             }
                                         }
                                     }
-
-
                                     ?>
                                 </select>
 
@@ -87,8 +97,6 @@
                             <tbody>
                                 <?php
 
-
-
                                 if (isset($_SESSION['username'])) {
                                     if (isset($_GET['department'])) {
                                         $department = $_GET['department'];
@@ -98,19 +106,17 @@
                                         //         <td>Computer Science</td>
                                         // <td>Dr. Sunil Kumar Jangid</td>
                                         // <td><a href="#" class="btn btn-success btn-sm">Edit</a></td>
-                                            if (mysqli_num_rows($qq) > 0) {
-                                                while ($row = mysqli_fetch_assoc($qq)) {
-                                                    echo "<tr><td><a href=./profile.php?college=" . $_SESSION['username'] . "&department=" . $department . "&id=" . $row['collegeid'] . ">" . $row['name'] . "</a></td>
+                                        if (mysqli_num_rows($qq) > 0) {
+                                            while ($row = mysqli_fetch_assoc($qq)) {
+                                                echo "<tr><td><a href=./profile.php?college=" . $_SESSION['username'] . "&department=" . $department . "&id=" . $row['collegeid'] . ">" . $row['name'] . "</a></td>
                                                         <td>" . $row['collegeid'] . "</td>
                                                         <td>" . $row['age'] . "</td>
                                                         <td>" . $row['gender'] . "</td>
                                                         <td>" . $row['address'] . "</td></tr>";
-                                                }
                                             }
-                                            else{
-                                                echo "No Students Yet";
-                                            }
-                                       
+                                        } else {
+                                            echo "No Students Yet";
+                                        }
                                     }
                                 } else {
                                     echo '<script type="text/javascript">location.href = "./login.php";</script>';

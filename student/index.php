@@ -64,7 +64,7 @@
                 <form method="post">
                     <div class="row justify-content-center">
                         <div class="col-sm-12 col-md-5 col-lg-3">
-                            <label for="department">Department:</label>
+                            <label for="department">Organization:</label>
                             <select name="department" class="form-control form-control-sm custom-select custom-select-sm" name="college" required id="college">
                                 <?php
                                 $dl = "users";

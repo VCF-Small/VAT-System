@@ -71,6 +71,17 @@
                     </div>
                 </div>
                 <div class="card-body">
+                <?php
+
+            if (!isset($_GET['department'])) {
+                $dl = $_SESSION['username'] . "_departments";
+                $q = "SELECT codename FROM " . $dl . " ORDER BY ID ASC LIMIT 1";
+                $result = mysqli_query($conn, $q);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<script> location.href='classes.php?department=" . $row['codename'] . "'</script>";
+                }
+            }
+            ?>
                     <p class="lead">Add New Class</p>
                     <div class="row">
                         <div class="col-12">
