@@ -117,6 +117,16 @@
                             $q2 = "INSERT INTO " . $cl . "(codename, name) VALUES('" . $codename . "', '" . $name . "')";
                             if (mysqli_query($conn, $qq)) {
                                 if (mysqli_query($conn, $q2)) {
+                                    $sl = $_SESSION['username'] . "_" . $department . "_students";
+                                    $sq = "SELECT collegeid FROM " . $sl;
+                                    $result = mysqli_query($conn, $sq);
+                                    if (mysqli_num_rows($result) > 0) {
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            $sl = $_SESSION['username'] . "_" . $department . "_" . $row['collegeid'];
+                                            $slq = "ALTER TABLE $sl ADD  ". $codename ." varchar(255)";
+                                            mysqli_query($conn, $slq);
+                                        }
+                                    }
                                     echo "Class Added Successfully";
                                 }
                             }
@@ -133,6 +143,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <script>
+                                    function delete_it(e) {
+                                        var r = confirm('Are you sure?');
+                                        if (r == true) {
+                                            location.href = "./delete.php?department=" + e.id + "&class=" + e.name;
+                                            // console.log("./deleteclass.php?department=" + e.id + "&class=" + e.name);
+                                        }
+                                    }
+                                </script>
 
                                 <?php
 
@@ -151,7 +170,8 @@
                                             while ($row = mysqli_fetch_assoc($qq)) {
                                                 echo "<tr><td>" . $row['name'] . "</td>
                                                             <td>" . $row['codename'] . "</td>
-                                                            <td><a href='#' class='btn btn-success btn-sm'>Edit</a></td></tr>";
+                                                            <td><a href='#' class='btn btn-success btn-sm'>Edit</a></td>
+                                                            <td><a name ='" . $row['codename'] . "' id='" . $_GET['department'] . "'  onclick='delete_it(this)' class='btn btn-danger btn-sm'>Delete</a></td></tr>";
                                             }
                                         }
                                     }

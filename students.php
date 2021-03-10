@@ -43,6 +43,7 @@
                             <form method="post">
                                 <select class="form-control form-control-sm custom-select custom-select-sm" name="department" required id="department">
                                     <?php
+                                    
                                     $department = "";
                                     if (isset($_GET['department'])) {
                                         $department = $_GET['department'];
@@ -97,15 +98,19 @@
                                         //         <td>Computer Science</td>
                                         // <td>Dr. Sunil Kumar Jangid</td>
                                         // <td><a href="#" class="btn btn-success btn-sm">Edit</a></td>
-                                        if (mysqli_num_rows($qq) > 0) {
-                                            while ($row = mysqli_fetch_assoc($qq)) {
-                                                echo "<tr><td><a href=./profile.php?college=" . $_SESSION['username'] . "&department=" . $department . "&id=" . $row['collegeid'] . ">" . $row['name'] . "</a></td>
-                                                    <td>" . $row['collegeid'] . "</td>
-                                                    <td>" . $row['age'] . "</td>
-                                                    <td>" . $row['gender'] . "</td>
-                                                    <td>" . $row['address'] . "</td></tr>";
+                                            if (mysqli_num_rows($qq) > 0) {
+                                                while ($row = mysqli_fetch_assoc($qq)) {
+                                                    echo "<tr><td><a href=./profile.php?college=" . $_SESSION['username'] . "&department=" . $department . "&id=" . $row['collegeid'] . ">" . $row['name'] . "</a></td>
+                                                        <td>" . $row['collegeid'] . "</td>
+                                                        <td>" . $row['age'] . "</td>
+                                                        <td>" . $row['gender'] . "</td>
+                                                        <td>" . $row['address'] . "</td></tr>";
+                                                }
                                             }
-                                        }
+                                            else{
+                                                echo "No Students Yet";
+                                            }
+                                       
                                     }
                                 } else {
                                     echo '<script type="text/javascript">location.href = "./login.php";</script>';

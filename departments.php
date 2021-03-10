@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="assets/js/script.min.js?h=b86d882c5039df370319ea6ca19e5689"></script>
 </head>
 
 <body id="page-top">
@@ -19,7 +24,7 @@
         include("conn.php");
         include("navbar.php");
         ?>
-         <?php
+        <?php
         if (!isset($_SESSION['username'])) {
             header("location:login.php");
         }
@@ -33,10 +38,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                        <p class="lead">Add Department</p>
+                            <p class="lead">Add Department</p>
                             <form method="post">
                                 <div class="row">
-                                
+
                                     <div class="col-md-6 col-sm-12 ">
                                         <label for="name">Department Name :</label>
                                         <input type="text" class="form-control form-control-sm" name="name" required>
@@ -63,7 +68,7 @@
 
                             require("conn.php");
                             $dl = $_SESSION['username'] . "_departments";
-                            
+
                             if (!isset($_SESSION['username'])) {
                                 header('location:./login.php');
                             }
@@ -85,7 +90,7 @@
                                             $qq = "CREATE TABLE IF NOT EXISTS " . $cl . " ( `id` INT NOT NULL AUTO_INCREMENT  , `codename` VARCHAR(10) NOT NULL , `name` VARCHAR(40) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
                                             $qq2 = "CREATE TABLE IF NOT EXISTS " . $cl . "_students ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(40) NOT NULL , `collegeid` VARCHAR(20) NOT NULL , `age` INT(4) NOT NULL , `gender` VARCHAR(10) NOT NULL , `address` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;";
                                             if (mysqli_query($conn, $qq)) {
-                                                if(mysqli_query($conn, $qq2)){
+                                                if (mysqli_query($conn, $qq2)) {
                                                     echo "<p style='color:green'>Department Was Added Successfully</p>";
                                                 }
                                             }
@@ -109,6 +114,27 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <script>
+                                    function delete_it(e){
+                                        var r = confirm('Are you sure?');
+                                                if(r == true)
+                                                {
+                                                    location.href = "./delete.php?department=" + e.name;
+                                                }
+                                        
+                                        // var db = document.getElementsByClassName("delete_btn");
+                                        // for (var i = 0; i< db.length; i++) {
+                                        //     db[i].addEventListener("click", function(sender){
+                                                
+                                        //         var r = confirm('Are you sure?');
+                                        //         if(r == true)
+                                        //         {
+                                                    
+                                        //         }
+                                        //     })
+                                        // }
+                                    }
+                                </script>
                                 <tr>
                                     <?php
                                     if (isset($_SESSION['username'])) {
@@ -123,13 +149,15 @@
                                                 echo "<tr><td>" . $row['name'] . "</td>
                                                             <td>" . $row['codename'] . "</td>
                                                             <td>" . $row['hodname'] . "</td>
-                                                            <td><a href='#' class='btn btn-success btn-sm'>Edit</a></td></tr>";
+                                                            <td><a class='btn btn-success btn-sm'>Edit</a></td>
+                                                            <td><a name='" . $row['codename'] . "' onclick='delete_it(this)' class='btn btn-danger btn-sm delete_btn'>Delete</a></td></tr>";
                                             }
                                         }
                                     } else {
                                         header("location:login.php");
                                     }
                                     ?>
+
                                 </tr>
 
                             </tbody>
@@ -141,11 +169,7 @@
         </div>
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="assets/js/script.min.js?h=b86d882c5039df370319ea6ca19e5689"></script>
+
 </body>
 
 </html>
