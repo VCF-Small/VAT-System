@@ -170,7 +170,6 @@
                                             while ($row = mysqli_fetch_assoc($qq)) {
                                                 echo "<tr><td>" . $row['name'] . "</td>
                                                             <td>" . $row['codename'] . "</td>
-                                                            <td><a href='#' class='btn btn-success btn-sm'>Edit</a></td>
                                                             <td><a name ='" . $row['codename'] . "' id='" . $_GET['department'] . "'  onclick='delete_it(this)' class='btn btn-danger btn-sm'>Delete</a></td></tr>";
                                             }
                                         }

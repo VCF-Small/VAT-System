@@ -149,7 +149,6 @@
                                                 echo "<tr><td>" . $row['name'] . "</td>
                                                             <td>" . $row['codename'] . "</td>
                                                             <td>" . $row['hodname'] . "</td>
-                                                            <td><a class='btn btn-success btn-sm'>Edit</a></td>
                                                             <td><a name='" . $row['codename'] . "' onclick='delete_it(this)' class='btn btn-danger btn-sm delete_btn'>Delete</a></td></tr>";
                                             }
                                         }
