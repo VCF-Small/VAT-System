@@ -134,7 +134,7 @@
                                     if (mysqli_num_rows($result) > 0) {
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             $sl = $_SESSION['username'] . "_" . $department . "_" . $row['collegeid'];
-                                            $slq = "ALTER TABLE $sl ADD  ". $codename ." varchar(255)";
+                                            $slq = "ALTER TABLE $sl ADD  ". $codename ." CHAR(1)";
                                             mysqli_query($conn, $slq);
                                         }
                                     }
