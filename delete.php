@@ -4,13 +4,15 @@
     $username = $_SESSION["username"];
     if(isset($_SESSION['username'])){
         if(!empty($_GET)){
-            if(isset($_GET['department']) && isset($_GET['class']) && isset($_GET['id'])){
+            if(isset($_GET['department']) && isset($_GET['id'])){
                 $si = $_SESSION['username'] . "_" . $_GET['department'] ."_students";
-                $sq = "DELETE FROM '".$si."' where collegeid = '".$_GET['id']."'";
+                $sq = "DELETE FROM ".$si." where collegeid = '".$_GET['id']."'";
                 $sl = $_SESSION['username'] . "_" . $_GET['department'] . "_" . $_GET['id'];
-                $slq = "DROP Table IF EXIST ".$sl;
+                $slq = "DROP Table IF EXISTS ".$sl;
                 mysqli_query($conn, $slq);
                 mysqli_query($conn, $sq);
+                // echo $slq;
+                echo '<script>location.href = "students.php"</script>';
             }
             
             else if(isset($_GET['department']) && isset($_GET['class'])){

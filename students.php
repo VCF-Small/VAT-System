@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=9db842b3dc3336737559eb4abc0f1b3d">
+    <script src='./assets./vendor/jquery/jquery-3.2.1.min.js'></script>
+    <link rel='stylesheet' href='./assets/css/style.css' />
 </head>
 
 <body id="page-top">
@@ -95,6 +97,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <script>
+                                    function delete_it(e){
+                                        var r = confirm('Are you sure?');
+                                                if(r == true)
+                                                {
+                                                    location.href = "./delete.php?department=" + e.id + "&id=" + e.name;
+                                                }
+                                        }
+                                </script>
                                 <?php
 
                                 if (isset($_SESSION['username'])) {
@@ -112,7 +123,8 @@
                                                         <td>" . $row['collegeid'] . "</td>
                                                         <td>" . $row['age'] . "</td>
                                                         <td>" . $row['gender'] . "</td>
-                                                        <td>" . $row['address'] . "</td></tr>";
+                                                        <td>" . $row['address'] . "</td>
+                                                        <td><a name='" . $row['collegeid'] . "' id = '". $_GET['department'] ."' onclick='delete_it(this)' class='btn btn-danger btn-sm delete_btn'>Delete</a></td></tr>";
                                             }
                                         } else {
                                             echo "No Students Yet";
